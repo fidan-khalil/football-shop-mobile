@@ -1,4 +1,4 @@
-## TUGAS 7
+### TUGAS 7 ###
 1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
     Widget tree adalah struktur hierarki yang menggambarkan bagaimana widget tersusun dalam aplikasi flutter.
 
@@ -69,3 +69,118 @@
         - Restart aplikasi dan reset state
         - Aplikasi berjalan ulang dari awal
         contoh: ubah model state awal atau global variable
+
+### Tugas 8 ###
+1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+    Navigator.push(): Menambahkan halaman baru di atas stack halaman sebelumnya, sehingga user masih bisa kembali ke halaman sebelumnya dengan tombol back (Navigator.pop()). Pada aplikasi Football Shop saya, digunakan ketika user mengklik tombol Create Product yang akan memunculkan halaman form.
+
+    Navigator.pushReplacement(): Mengganti halaman saat ini dengan halaman baru, jadi halaman lama dihapus dari stack, sehingga user tidak bisa kembali ke halaman sebelumnya dengan tombol back (Navigator.pop()). Pada aplikasi Football Shop saya, digunakan ketika user mengklik suatu tombol pada drawer yang akan mengganti halaman saat ini dengan halaman yang baru.
+
+2. Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+    Scaffold => menyediakan kerangka utama halaman (AppBar, Drawer)
+    AppBar => menampilkan judul halaman dan tombol navigasi secara konsisten
+    Drawer => menyediakan navigasi global ke halaman-halaman utama 
+
+3. Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+    Padding => Memberi ruang di sekitar elemen
+    contoh: 
+    Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextFormField(
+            decoration: InputDecoration(
+            hintText: "Nama Produk",
+            labelText: "Nama Produk",
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+            ),
+            ),
+            onChanged: (String? value) {
+            setState(() {
+                _name = value!;
+            });
+            },
+            validator: (String? value) {
+            if (value == null || value.isEmpty) {
+                return "Nama produk tidak boleh kosong!";
+            }
+            return null;
+            },
+        ),
+    )
+    
+    SingleChildScrollView => Membuat seluruh form bisa di-scroll secara vertikal jika kontennya panjang
+    contoh:
+    SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
+            children: [
+            Text('Nama: $_name'),
+            Text('Kategori: $_category'),
+            Text('Brand: $_brand'),
+            Text('Thumbnail: $_thumbnail'),
+            Text('Harga: $_price'),
+            Text('Rating: $_rating'),
+            Text('Deskripsi: $_description'),
+            ],
+        ),
+    ),
+
+    ListView => Alternatif Column yang bisa langsung di-scroll tanpa perlu pembungkus tambahan
+    contoh:
+    ListView(
+        children: [
+            const DrawerHeader(
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                ),
+                child: Column(
+                    children: [
+                        Text(
+                            'Football Shop',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                            ),
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                            Text("Seluruh perlengkapan sepak bola terkini, hanya di sini!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                            ),
+                        ),
+                    ],
+                ),
+            ),
+            ListTile(
+                leading: const Icon(Icons.home_outlined),
+                title: const Text('Home'),
+                // Bagian redirection ke MyHomePage
+                onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage(),)
+                    );
+                },
+            ),
+            ListTile(
+                leading: const Icon(Icons.post_add),
+                title: const Text('Create Product'),
+                // Bagian redirection ke NewsFormPage
+                onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProductFormPage())
+                    );
+                },
+            ),
+        ],
+    ),
+
+4. Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+    Menggunakan ThemeData pada main.dart

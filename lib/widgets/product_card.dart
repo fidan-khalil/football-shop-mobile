@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:football_shop/productlist_form.dart';
-import 'package:football_shop/menu.dart';
+import 'package:football_shop/screens/productlist_form.dart';
+import 'package:football_shop/screens/menu.dart';
+import 'package:football_shop/screens/product_entry_list.dart';
 
 class ItemCard extends StatelessWidget {
   // Menampilkan kartu dengan ikon dan nama.
@@ -42,6 +43,13 @@ class ItemCard extends StatelessWidget {
               SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")));
           if (item.name == "Create Product") {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductFormPage()));
+          } else if (item.name == "All Products") {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductEntryListPage()
+                  ),
+              );
           }
         },
         // Container untuk menyimpan Icon dan Text
